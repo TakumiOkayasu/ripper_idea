@@ -36,6 +36,8 @@ jobs:
     name: Dependency Review
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
+    # Dependency graph が無効なリポジトリではスキップ
+    continue-on-error: true
 
     steps:
       - uses: actions/checkout@v4
