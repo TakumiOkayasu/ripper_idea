@@ -2,7 +2,7 @@
 
 お題を入れると、関連するアイデアが波紋みたいに広がっていくやつ。
 
-```
+```text
        「新規事業」
            │
      ┌─────┼─────┐
@@ -18,29 +18,31 @@
 
 ```bash
 cd backend
-
-# venv 作る
-python -m venv venv
-source venv/bin/activate
-
-# 依存入れる
+python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
-
-# 環境変数
-cp .env.example .env
-# .env を開いて CLAUDE_API_KEY を設定
-
-# 起動
+cp .env.example .env  # OPENROUTER_API_KEY を設定
 uvicorn main:app --reload
 ```
 
 http://localhost:8000/docs で API ドキュメントが見れる。
 
-DevContainer 使うなら VS Code で「Reopen in Container」するだけ。
-
 ### フロントエンド
 
-まだ。
+```bash
+cd frontend
+bun install
+bun run dev
+```
+
+http://localhost:5173 で開く。
+
+## 友達と共有
+
+```bash
+# Cloudflare Tunnel で一時的に公開
+cloudflared tunnel --url http://localhost:5173
+# 表示されたURLを共有
+```
 
 ## API
 
@@ -55,27 +57,22 @@ curl -X POST http://localhost:8000/api/ideas/generate \
 ```json
 {
   "ideas": [
-    {"content": "ユーザーインタビュー自動化ツール", "confidence": 0.92},
-    {"content": "プロトタイプ共有プラットフォーム", "confidence": 0.88},
-    {"content": "開発者向けフィードバック収集", "confidence": 0.85}
+    {"content": "ユーザーインタビュー自動化", "confidence": 0.92},
+    {"content": "プロトタイプ共有基盤", "confidence": 0.88}
   ]
 }
 ```
 
-### GET /health
-
-生きてるか確認用。
-
 ## 構成
 
-- バックエンド: Python + FastAPI + Claude API
-- フロントエンド: React + Vite + D3.js (予定)
-- デプロイ: Railway (API) + Vercel (フロント)
+- Frontend: React 19 + Vite + D3.js
+- Backend: Python + FastAPI + OpenRouter
+- Package: Bun (frontend) / pip (backend)
 
 ## 環境変数
 
 | 変数名 | 説明 | デフォルト |
 |--------|------|-----------|
-| CLAUDE_API_KEY | Claude の API キー | (必須) |
+| OPENROUTER_API_KEY | OpenRouter の API キー | (必須) |
 | FRONTEND_URL | CORS 許可するオリジン | http://localhost:5173 |
-| PORT | サーバーのポート | 8000 |
+| VITE_API_URL | バックエンドURL | http://localhost:8000 |
