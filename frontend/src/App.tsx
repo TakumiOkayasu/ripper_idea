@@ -10,7 +10,10 @@ function App() {
   const { root, isLoading, error, createRoot, expandNode, setRoot } = useIdeaTree()
   const [savedRoot, setSavedRoot] = useLocalStorage<Node | null>('ripple-idea-root', null)
   const isLoadingRef = useRef(isLoading)
-  isLoadingRef.current = isLoading
+
+  useEffect(() => {
+    isLoadingRef.current = isLoading
+  }, [isLoading])
 
   // 初回ロード時にlocalStorageから復元
   useEffect(() => {

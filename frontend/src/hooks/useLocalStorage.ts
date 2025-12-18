@@ -11,7 +11,10 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
   })
 
   const storedValueRef = useRef(storedValue)
-  storedValueRef.current = storedValue
+
+  useEffect(() => {
+    storedValueRef.current = storedValue
+  }, [storedValue])
 
   const setValue = useCallback(
     (value: T | ((val: T) => T)) => {
