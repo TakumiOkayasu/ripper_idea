@@ -1,5 +1,8 @@
-import { useEffect, useRef } from 'react'
-import * as d3 from 'd3'
+import { memo, useEffect, useRef } from 'react'
+import { select } from 'd3-selection'
+import { hierarchy, tree } from 'd3-hierarchy'
+import { linkRadial } from 'd3-shape'
+import type { HierarchyPointNode, HierarchyPointLink } from 'd3-hierarchy'
 import type { Node } from '../types'
 
 interface RadialTreeProps {
@@ -7,11 +10,11 @@ interface RadialTreeProps {
   onNodeClick: (node: Node) => void
 }
 
-interface D3Node extends d3.HierarchyPointNode<Node> {
+interface D3Node extends HierarchyPointNode<Node> {
   data: Node
 }
 
-export function RadialTree({ root, onNodeClick }: RadialTreeProps) {
+export const RadialTree = memo(function RadialTree({ root, onNodeClick }: RadialTreeProps) {
   const svgRef = useRef<SVGSVGElement>(null)
 
   useEffect(() => {
@@ -21,7 +24,7 @@ export function RadialTree({ root, onNodeClick }: RadialTreeProps) {
     const height = 800
     const radius = Math.min(width, height) / 2 - 100
 
-    const svg = d3.select(svgRef.current)
+    const svg = select(svgRef.current)
     svg.selectAll('*').remove()
 
     const g = svg
@@ -30,9 +33,9 @@ export function RadialTree({ root, onNodeClick }: RadialTreeProps) {
       .append('g')
       .attr('transform', `translate(${width / 2},${height / 2})`)
 
-    const hierarchy = d3.hierarchy(root, (d) => d.children)
-    const treeLayout = d3.tree<Node>().size([2 * Math.PI, radius])
-    const treeData = treeLayout(hierarchy)
+    const root_hierarchy = hierarchy(root, (d) => d.children)
+    const treeLayout = tree<Node>().size([2 * Math.PI, radius])
+    const treeData = treeLayout(root_hierarchy)
 
     // Links
     g.selectAll('.link')
@@ -45,8 +48,7 @@ export function RadialTree({ root, onNodeClick }: RadialTreeProps) {
       .attr('stroke-width', 1.5)
       .attr(
         'd',
-        d3
-          .linkRadial<d3.HierarchyPointLink<Node>, d3.HierarchyPointNode<Node>>()
+        linkRadial<HierarchyPointLink<Node>, HierarchyPointNode<Node>>()
           .angle((d) => d.x)
           .radius((d) => d.y)
       )
@@ -87,4 +89,4 @@ export function RadialTree({ root, onNodeClick }: RadialTreeProps) {
   }
 
   return <svg ref={svgRef} className="radial-tree" />
-}
+})

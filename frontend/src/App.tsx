@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useCallback, useRef } from 'react'
 import { ControlPanel } from './components/ControlPanel'
 import { RadialTree } from './components/RadialTree'
 import { useIdeaTree } from './hooks/useIdeaTree'
@@ -9,6 +9,8 @@ import './App.css'
 function App() {
   const { root, isLoading, error, createRoot, expandNode, setRoot } = useIdeaTree()
   const [savedRoot, setSavedRoot] = useLocalStorage<Node | null>('ripple-idea-root', null)
+  const isLoadingRef = useRef(isLoading)
+  isLoadingRef.current = isLoading
 
   // 初回ロード時にlocalStorageから復元
   useEffect(() => {
@@ -24,16 +26,16 @@ function App() {
     }
   }, [root, setSavedRoot])
 
-  const handleSubmit = async (topic: string) => {
+  const handleSubmit = useCallback(async (topic: string) => {
     const newRoot = createRoot(topic)
     await expandNode(newRoot)
-  }
+  }, [createRoot, expandNode])
 
-  const handleNodeClick = (node: Node) => {
-    if (!isLoading && node.children.length === 0) {
+  const handleNodeClick = useCallback((node: Node) => {
+    if (!isLoadingRef.current && node.children.length === 0) {
       expandNode(node)
     }
-  }
+  }, [expandNode])
 
   return (
     <div className="app">
