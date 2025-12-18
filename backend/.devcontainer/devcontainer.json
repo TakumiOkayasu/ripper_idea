@@ -1,0 +1,52 @@
+{
+	"name": "Ripple Idea Backend",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"context": ".",
+		"args": {
+			"USERNAME": "vscode",
+			"USER_UID": "1000",
+			"USER_GID": "1000"
+		}
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/git:latest": {},
+		"ghcr.io/devcontainers/features/node:1": {},
+		"ghcr.io/anthropics/devcontainer-features/claude-code:latest": {},
+		"ghcr.io/devcontainers/features/github-cli:latest": {}
+	},
+	"postCreateCommand": "pip install -r requirements.txt",
+	"remoteUser": "vscode",
+	"forwardPorts": [8000],
+	"portsAttributes": {
+		"8000": {
+			"label": "FastAPI",
+			"onAutoForward": "notify"
+		}
+	},
+	"workspaceFolder": "/workspace",
+	"containerUser": "vscode",
+	"mounts": [
+		"source=${localWorkspaceFolder}/,target=/workspace,type=bind",
+		"source=${localEnv:HOME}/.claude,target=/home/vscode/.claude,type=bind",
+		"source=${localEnv:HOME}/.claude.json,target=/home/vscode/.claude.json,type=bind",
+		"source=${localEnv:HOME}/.cache/claude-cli-nodejs,target=/home/vscode/.cache/claude-cli-nodejs,type=bind"
+	],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"charliermarsh.ruff",
+				"artdiniz.quitcontrol-vscode",
+				"mhutchie.git-graph",
+				"eamodio.gitlens",
+				"exiasr.hadolint",
+				"oderwat.indent-rainbow"
+			],
+			"settings": {
+				"python.defaultInterpreterPath": "/usr/local/bin/python"
+			}
+		}
+	}
+}
