@@ -85,6 +85,14 @@
   cursor: not-allowed;
 }
 
+.control-panel .clear-button {
+  background-color: #dc3545;
+}
+
+.control-panel .clear-button:hover:not(:disabled) {
+  background-color: #c82333;
+}
+
 .error {
   color: #dc3545;
   margin-bottom: 1rem;

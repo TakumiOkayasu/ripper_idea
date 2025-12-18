@@ -2,10 +2,12 @@ import { memo, useState, useCallback } from 'react'
 
 interface ControlPanelProps {
   onSubmit: (topic: string) => void
+  onClear: () => void
   isLoading: boolean
+  hasRoot: boolean
 }
 
-export const ControlPanel = memo(function ControlPanel({ onSubmit, isLoading }: ControlPanelProps) {
+export const ControlPanel = memo(function ControlPanel({ onSubmit, onClear, isLoading, hasRoot }: ControlPanelProps) {
   const [topic, setTopic] = useState('')
 
   const handleSubmit = useCallback((e: React.FormEvent) => {
@@ -32,6 +34,11 @@ export const ControlPanel = memo(function ControlPanel({ onSubmit, isLoading }: 
       <button type="submit" disabled={isLoading || !topic.trim()}>
         {isLoading ? '生成中...' : '生成'}
       </button>
+      {hasRoot && (
+        <button type="button" onClick={onClear} disabled={isLoading} className="clear-button">
+          クリア
+        </button>
+      )}
     </form>
   )
 })

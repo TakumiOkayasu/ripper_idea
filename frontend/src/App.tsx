@@ -7,8 +7,8 @@ import type { Node } from './types'
 import './App.css'
 
 function App() {
-  const { root, isLoading, error, createRoot, expandNode, setRoot } = useIdeaTree()
-  const [savedRoot, setSavedRoot] = useLocalStorage<Node | null>('ripple-idea-root', null)
+  const { root, isLoading, error, createRoot, expandNode, setRoot, reset } = useIdeaTree()
+  const [savedRoot, setSavedRoot, removeSavedRoot] = useLocalStorage<Node | null>('ripple-idea-root', null)
   const isLoadingRef = useRef(isLoading)
 
   useEffect(() => {
@@ -40,6 +40,11 @@ function App() {
     }
   }, [expandNode])
 
+  const handleClear = useCallback(() => {
+    reset()
+    removeSavedRoot()
+  }, [reset, removeSavedRoot])
+
   return (
     <div className="app">
       <header className="header">
@@ -47,7 +52,7 @@ function App() {
       </header>
 
       <main className="main">
-        <ControlPanel onSubmit={handleSubmit} isLoading={isLoading} />
+        <ControlPanel onSubmit={handleSubmit} onClear={handleClear} isLoading={isLoading} hasRoot={!!root} />
 
         {error && <div className="error">{error}</div>}
 
