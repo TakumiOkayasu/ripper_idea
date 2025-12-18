@@ -142,9 +142,9 @@ bun run dev
 # ターミナル2: Backend
 uvicorn main:app --reload
 
-# ターミナル3: Tunnel (共有時のみ)
+# ターミナル3: Tunnel (共有時のみ、login不要)
 cloudflared tunnel --url http://localhost:5173
-# → 表示されたURLを共有
+# → 表示されたURLを共有 (毎回ランダム)
 ```
 
 **cloudflared インストール**:

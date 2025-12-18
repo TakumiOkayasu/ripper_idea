@@ -24,7 +24,7 @@ cp .env.example .env  # OPENROUTER_API_KEY を設定
 uvicorn main:app --reload
 ```
 
-http://localhost:8000/docs で API ドキュメントが見れる。
+<http://localhost:8000/docs> で API ドキュメントが見れる。
 
 ### フロントエンド
 
@@ -34,15 +34,17 @@ bun install
 bun run dev
 ```
 
-http://localhost:5173 で開く。
+<http://localhost:5173> で開く。
 
 ## 友達と共有
 
 ```bash
-# Cloudflare Tunnel で一時的に公開
+# Cloudflare Tunnel で一時的に公開 (login不要)
 cloudflared tunnel --url http://localhost:5173
 # 表示されたURLを共有
 ```
+
+※ `cloudflared tunnel login` は不要。毎回ランダムURLが発行される。
 
 ## API
 
@@ -74,5 +76,5 @@ curl -X POST http://localhost:8000/api/ideas/generate \
 | 変数名 | 説明 | デフォルト |
 |--------|------|-----------|
 | OPENROUTER_API_KEY | OpenRouter の API キー | (必須) |
-| FRONTEND_URL | CORS 許可するオリジン | http://localhost:5173 |
-| VITE_API_URL | バックエンドURL | http://localhost:8000 |
+| FRONTEND_URL | CORS 許可するオリジン | `http://localhost:5173` |
+| VITE_API_URL | バックエンドURL | `http://localhost:8000` |
