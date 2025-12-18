@@ -32,7 +32,7 @@
 
 ### フロントエンド
 
-- **フレームワーク**: React 18 + TypeScript (Vite)
+- **フレームワーク**: React 19 + TypeScript (Vite)
 - **ビジュアライゼーション**: D3.js (ラジアルツリー)
 - **スタイリング**: シンプルなCSS (UIライブラリ不使用)
 - **ストレージ**: localStorage (JSON形式)
@@ -196,11 +196,11 @@ web: uvicorn main:app --host 0.0.0.0 --port $PORT
 **requirements.txt最小構成**:
 
 ```text
-fastapi==0.104.1
-uvicorn[standard]==0.24.0
-anthropic==0.7.1
-pydantic==2.5.0
-python-dotenv==1.0.0
+fastapi
+uvicorn[standard]
+anthropic
+pydantic
+python-dotenv
 ```
 
 ## 開発フロー
@@ -464,12 +464,12 @@ bun run build
 **対応**:
 
 - `package.json` に `"type": "module"` を明示
-- npm package が問題ある場合は、`bun.lockb` を削除して再インストール
+- npm package が問題ある場合は、`bun.lock` を削除して再インストール
 
 #### 3. Vite 連携
 
 **問題**: ほぼなし。Bun + Vite の組み合わせは安定
-**推奨**: Vite 5.0+ 使用
+**推奨**: Vite 7.0+ 使用
 
 #### 4. D3.js 互換性
 
@@ -479,7 +479,7 @@ bun run build
 ### 推奨チェックリスト
 
 - [ ] `package.json` に `"packageManager": "bun@latest"` を追加
-- [ ] `.gitignore` に `bun.lockb` を追加
+- [ ] `bun.lock` をコミットに含める (Bun 1.1+ はテキスト形式)
 - [ ] ローカルで `bun run build` → `dist/` 生成確認
 - [ ] Vercel デプロイ前に build command テスト
 - [ ] 本番デプロイ後に API 呼び出し確認
@@ -488,7 +488,7 @@ bun run build
 
 ```bash
 # lock ファイルリセット(問題発生時)
-rm bun.lockb
+rm bun.lock
 bun install
 
 # ビルド検証
